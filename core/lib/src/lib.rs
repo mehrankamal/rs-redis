@@ -1,14 +1,21 @@
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
+pub struct Request {
+    pub message_body_size: u64,
+    pub message_type: String,
+    pub message_body: String,
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+impl Request {
+    pub fn to_buffer(self: &Self) -> Vec<u8> {
+        let mut req_buffer = Vec::new();
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+        req_buffer.extend_from_slice(&self.message_body_size.to_le_bytes());
+    
+        return req_buffer;
     }
+}
+
+pub struct Response {
+    pub response_body_size: u64,
+    pub response_type: String,
+    pub response_body: String,
 }
